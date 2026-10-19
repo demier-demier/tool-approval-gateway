@@ -1,0 +1,266 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tool Approval Gateway action v1",
+  "description": "Synthetic allowlisted actions. Runtime parsing also enforces duplicate-key rejection, a 16384-byte limit, depth <= 8, exact integer tokens, nonblank text, and Unicode/control-character restrictions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "request_id",
+    "tenant_id",
+    "principal_id",
+    "tool",
+    "target",
+    "arguments"
+  ],
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1
+    },
+    "request_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_-]{2,63}$"
+    },
+    "tenant_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_-]{2,63}$"
+    },
+    "principal_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "^[a-z][a-z0-9_-]{2,63}$"
+    },
+    "tool": {
+      "type": "string",
+      "enum": [
+        "catalog.lookup",
+        "inventory.adjust",
+        "notifications.send"
+      ]
+    },
+    "target": {
+      "type": "string"
+    },
+    "arguments": {
+      "type": "object"
+    }
+  },
+  "oneOf": [
+    {
+      "properties": {
+        "tool": {
+          "const": "catalog.lookup"
+        },
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "item_id"
+          ],
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "enum": [
+                "item-demo-001",
+                "item-demo-002",
+                "item-demo-003"
+              ]
+            }
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-001"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-002"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-002"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-003"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-003"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "properties": {
+        "tool": {
+          "const": "inventory.adjust"
+        },
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "item_id",
+            "delta",
+            "reason"
+          ],
+          "properties": {
+            "item_id": {
+              "type": "string",
+              "enum": [
+                "item-demo-001",
+                "item-demo-002",
+                "item-demo-003"
+              ]
+            },
+            "delta": {
+              "type": "integer",
+              "minimum": -100,
+              "maximum": 100,
+              "not": {
+                "const": 0
+              }
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            }
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-001"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-001"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-002"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-002"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "const": "item:item-demo-003"
+            },
+            "arguments": {
+              "properties": {
+                "item_id": {
+                  "const": "item-demo-003"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "properties": {
+        "tool": {
+          "const": "notifications.send"
+        },
+        "arguments": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "channel_id",
+            "text"
+          ],
+          "properties": {
+            "channel_id": {
+              "type": "string",
+              "enum": [
+                "channel-demo-ops",
+                "channel-demo-quality"
+              ]
+            },
+            "text": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1200
+            }
+          }
+        }
+      },
+      "anyOf": [
+        {
+          "properties": {
+            "target": {
+              "const": "channel:channel-demo-ops"
+            },
+            "arguments": {
+              "properties": {
+                "channel_id": {
+                  "const": "channel-demo-ops"
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "target": {
+              "const": "channel:channel-demo-quality"
+            },
+            "arguments": {
+              "properties": {
+                "channel_id": {
+                  "const": "channel-demo-quality"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

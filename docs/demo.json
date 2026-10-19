@@ -1,0 +1,1100 @@
+{
+  "format_version": 1,
+  "title": "Tool approval gateway \u2014 synthetic decision evidence",
+  "generated_at": "2026-10-19T21:15:36+00:00",
+  "simulation": true,
+  "external_actions": 0,
+  "clock": "Fixed synthetic Unix clock starting at 1800000000",
+  "expected_outcomes_verified": 15,
+  "scenarios": [
+    {
+      "id": "case-01",
+      "title": "Read the synthetic catalog",
+      "description": "A fixed read-only tool executes without a grant.",
+      "tool": "catalog.lookup",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-read",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "catalog.lookup",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001"
+        }
+      },
+      "plan": {
+        "decision": "allow",
+        "risk": "read_only",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-read",
+        "request_digest": "af09b3ea1c61ee5aff9de03d258a938d94b07fe401ffc018ce0ce91eef5559b3",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "catalog.lookup",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "simulated_success",
+      "actual": "simulated_success",
+      "result": {
+        "status": "simulated_success",
+        "request_id": "request-demo-read",
+        "request_digest": "af09b3ea1c61ee5aff9de03d258a938d94b07fe401ffc018ce0ce91eef5559b3",
+        "simulation": true,
+        "external_actions": false,
+        "result": {
+          "item_id": "item-demo-001",
+          "quantity": 40,
+          "source": "synthetic_fixture"
+        }
+      },
+      "audit": [
+        {
+          "event_id": 1,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "execution_committed",
+          "code": "SIMULATED_SUCCESS",
+          "request_id": "request-demo-read",
+          "request_digest": "af09b3ea1c61ee5aff9de03d258a938d94b07fe401ffc018ce0ce91eef5559b3",
+          "tool": "catalog.lookup",
+          "target": "item:item-demo-001"
+        }
+      ]
+    },
+    {
+      "id": "case-02",
+      "title": "Sensitive action, missing approval",
+      "description": "A valid action still needs an independent approval.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_REQUIRED",
+      "actual": "APPROVAL_REQUIRED",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_REQUIRED",
+        "message": "A separately issued approval is required."
+      },
+      "audit": [
+        {
+          "event_id": 2,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "APPROVAL_REQUIRED",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-03",
+      "title": "Approve the exact adjustment",
+      "description": "The synthetic quantity changes from 40 to 45 in the grant-consumption transaction.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "simulated_success",
+      "actual": "simulated_success",
+      "result": {
+        "status": "simulated_success",
+        "request_id": "request-demo-adjust",
+        "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+        "simulation": true,
+        "external_actions": false,
+        "result": {
+          "item_id": "item-demo-001",
+          "before": 40,
+          "after": 45,
+          "delta": 5
+        }
+      },
+      "audit": [
+        {
+          "event_id": 3,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "reviewer-demo-a",
+          "event": "approval_issued",
+          "code": "APPROVED",
+          "request_id": "request-demo-adjust",
+          "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+          "tool": "inventory.adjust",
+          "target": "item:item-demo-001"
+        },
+        {
+          "event_id": 4,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "execution_committed",
+          "code": "SIMULATED_SUCCESS",
+          "request_id": "request-demo-adjust",
+          "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+          "tool": "inventory.adjust",
+          "target": "item:item-demo-001"
+        }
+      ]
+    },
+    {
+      "id": "case-04",
+      "title": "Change arguments after approval",
+      "description": "Changing one approved argument breaks the request binding.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 9,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "c10ec1ad15bd222278df6868d500650886a16a45a2004efdfbec0b764f9bfbc0",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 9,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_MISMATCH",
+      "actual": "APPROVAL_MISMATCH",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_MISMATCH",
+        "message": "Approval is bound to a different exact action."
+      },
+      "audit": [
+        {
+          "event_id": 5,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "APPROVAL_MISMATCH",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-05",
+      "title": "Replay after gateway restart",
+      "description": "A new gateway instance reads the persisted consumed-grant state.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_REPLAY",
+      "actual": "APPROVAL_REPLAY",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_REPLAY",
+        "message": "Approval has already been consumed."
+      },
+      "audit": [
+        {
+          "event_id": 6,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "APPROVAL_REPLAY",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-06",
+      "title": "Reach the exact expiry boundary",
+      "description": "At expires_at, the grant is already expired; validity is an exclusive upper bound.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-expired",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-expired",
+        "request_digest": "594cb135bf5cb6d189a96a2a48881025bd18443523ba0a2ef0a3cfb5c59498f4",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_EXPIRED",
+      "actual": "APPROVAL_EXPIRED",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_EXPIRED",
+        "message": "Approval has reached its exclusive expiry timestamp."
+      },
+      "audit": [
+        {
+          "event_id": 7,
+          "occurred_at": 1800000000,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "reviewer-demo-a",
+          "event": "approval_issued",
+          "code": "APPROVED",
+          "request_id": "request-demo-expired",
+          "request_digest": "594cb135bf5cb6d189a96a2a48881025bd18443523ba0a2ef0a3cfb5c59498f4",
+          "tool": "inventory.adjust",
+          "target": "item:item-demo-001"
+        },
+        {
+          "event_id": 8,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "APPROVAL_EXPIRED",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-07",
+      "title": "Use another principal's request",
+      "description": "The trusted caller identity must equal the request identity.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": null,
+      "expected": "IDENTITY_MISMATCH",
+      "actual": "IDENTITY_MISMATCH",
+      "result": {
+        "status": "rejected",
+        "code": "IDENTITY_MISMATCH",
+        "message": "Action identity differs from the trusted context."
+      },
+      "audit": [
+        {
+          "event_id": 9,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-b",
+          "event": "rejected",
+          "code": "IDENTITY_MISMATCH",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-08",
+      "title": "Claim a different tenant",
+      "description": "A request cannot select a tenant other than the caller's authenticated tenant.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-b",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": null,
+      "expected": "IDENTITY_MISMATCH",
+      "actual": "IDENTITY_MISMATCH",
+      "result": {
+        "status": "rejected",
+        "code": "IDENTITY_MISMATCH",
+        "message": "Action identity differs from the trusted context."
+      },
+      "audit": [
+        {
+          "event_id": 10,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "IDENTITY_MISMATCH",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-09",
+      "title": "Transfer a grant to another principal",
+      "description": "Even with a matching new context, another principal cannot use the original grant.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-b",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "2d4a437c9cbd32a8d882f9fb222d372fda09837bcbe55779f233b3f6f313146a",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-b",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_MISMATCH",
+      "actual": "APPROVAL_MISMATCH",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_MISMATCH",
+        "message": "Approval is bound to a different exact action."
+      },
+      "audit": [
+        {
+          "event_id": 11,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-b",
+          "event": "rejected",
+          "code": "APPROVAL_MISMATCH",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-10",
+      "title": "Retarget an approved action",
+      "description": "A different allowlisted item still requires a different exact-action approval.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-002",
+        "arguments": {
+          "item_id": "item-demo-002",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "c8e83f8d4dc662a0bde363fbeec15b76953fd5b28d3f88249c5142f0b59d8bef",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-002",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-002",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "APPROVAL_MISMATCH",
+      "actual": "APPROVAL_MISMATCH",
+      "result": {
+        "status": "rejected",
+        "code": "APPROVAL_MISMATCH",
+        "message": "Approval is bound to a different exact action."
+      },
+      "audit": [
+        {
+          "event_id": 12,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "APPROVAL_MISMATCH",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-11",
+      "title": "Tamper with the grant signature",
+      "description": "Modified token bytes fail authentication before dispatch.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-adjust",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-adjust",
+        "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "INVALID_APPROVAL",
+      "actual": "INVALID_APPROVAL",
+      "result": {
+        "status": "rejected",
+        "code": "INVALID_APPROVAL",
+        "message": "Approval signature does not verify."
+      },
+      "audit": [
+        {
+          "event_id": 13,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "INVALID_APPROVAL",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-12",
+      "title": "Request an unknown tool",
+      "description": "The dispatcher cannot call tools outside its fixed allowlist.",
+      "tool": "files.export",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-unknown",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "files.export",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": null,
+      "expected": "UNKNOWN_TOOL",
+      "actual": "UNKNOWN_TOOL",
+      "result": {
+        "status": "rejected",
+        "code": "UNKNOWN_TOOL",
+        "message": "The tool is outside the fixed allowlist."
+      },
+      "audit": [
+        {
+          "event_id": 14,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "UNKNOWN_TOOL",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-13",
+      "title": "Send a boolean as a quantity",
+      "description": "Strict typing rejects booleans where an integer delta is required.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-malformed",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": true,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": null,
+      "expected": "INVALID_SCHEMA",
+      "actual": "INVALID_SCHEMA",
+      "result": {
+        "status": "rejected",
+        "code": "INVALID_SCHEMA",
+        "message": "Quantity delta must be a nonzero integer from -100 to 100."
+      },
+      "audit": [
+        {
+          "event_id": 15,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "INVALID_SCHEMA",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    },
+    {
+      "id": "case-14",
+      "title": "Store a synthetic notification",
+      "description": "The approved message is stored only in SQLite. Markup in its text stays inert in this report.",
+      "tool": "notifications.send",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-message",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "notifications.send",
+        "target": "channel:channel-demo-ops",
+        "arguments": {
+          "channel_id": "channel-demo-ops",
+          "text": "Synthetic note: <script>alert('fixture')</script> is inert report text."
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-message",
+        "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "notifications.send",
+        "target": "channel:channel-demo-ops",
+        "arguments": {
+          "channel_id": "channel-demo-ops",
+          "text": "Synthetic note: <script>alert('fixture')</script> is inert report text."
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "simulated_success",
+      "actual": "simulated_success",
+      "result": {
+        "status": "simulated_success",
+        "request_id": "request-demo-message",
+        "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+        "simulation": true,
+        "external_actions": false,
+        "result": {
+          "message_id": "sim-c7a8e7c54b1871600be446c9",
+          "channel_id": "channel-demo-ops",
+          "text_length": 71,
+          "delivery": "stored_locally_only"
+        }
+      },
+      "audit": [
+        {
+          "event_id": 16,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "reviewer-demo-a",
+          "event": "approval_issued",
+          "code": "APPROVED",
+          "request_id": "request-demo-message",
+          "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+          "tool": "notifications.send",
+          "target": "channel:channel-demo-ops"
+        },
+        {
+          "event_id": 17,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "execution_committed",
+          "code": "SIMULATED_SUCCESS",
+          "request_id": "request-demo-message",
+          "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+          "tool": "notifications.send",
+          "target": "channel:channel-demo-ops"
+        }
+      ]
+    },
+    {
+      "id": "case-15",
+      "title": "Attempt self-approval",
+      "description": "Holding both trusted roles does not permit approving your own sensitive action.",
+      "tool": "inventory.adjust",
+      "request": {
+        "version": 1,
+        "request_id": "request-demo-self-approval",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "item_id": "item-demo-001",
+          "delta": 5,
+          "reason": "Synthetic reconciliation"
+        }
+      },
+      "plan": {
+        "decision": "approval_required",
+        "risk": "sensitive",
+        "policy_version": "policy-v1",
+        "request_id": "request-demo-self-approval",
+        "request_digest": "af5d7ce161d071e1fdb94507a98a9a1c03a4a2396bae3fc5a9aa438d2f61acbf",
+        "tenant_id": "tenant-demo-a",
+        "principal_id": "agent-demo-a",
+        "tool": "inventory.adjust",
+        "target": "item:item-demo-001",
+        "arguments": {
+          "delta": 5,
+          "item_id": "item-demo-001",
+          "reason": "Synthetic reconciliation"
+        },
+        "simulation": true,
+        "external_actions": false,
+        "notice": "All connectors are local simulations. This plan does not reserve execution or grant approval."
+      },
+      "expected": "SELF_APPROVAL",
+      "actual": "SELF_APPROVAL",
+      "result": {
+        "status": "rejected",
+        "code": "SELF_APPROVAL",
+        "message": "A distinct principal must approve the action."
+      },
+      "audit": [
+        {
+          "event_id": 18,
+          "occurred_at": 1800000010,
+          "tenant_id": "tenant-demo-a",
+          "principal_id": "agent-demo-a",
+          "event": "rejected",
+          "code": "SELF_APPROVAL",
+          "request_id": null,
+          "request_digest": null,
+          "tool": null,
+          "target": null
+        }
+      ]
+    }
+  ],
+  "audit": [
+    {
+      "event_id": 1,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "execution_committed",
+      "code": "SIMULATED_SUCCESS",
+      "request_id": "request-demo-read",
+      "request_digest": "af09b3ea1c61ee5aff9de03d258a938d94b07fe401ffc018ce0ce91eef5559b3",
+      "tool": "catalog.lookup",
+      "target": "item:item-demo-001"
+    },
+    {
+      "event_id": 2,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "APPROVAL_REQUIRED",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 3,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "reviewer-demo-a",
+      "event": "approval_issued",
+      "code": "APPROVED",
+      "request_id": "request-demo-adjust",
+      "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+      "tool": "inventory.adjust",
+      "target": "item:item-demo-001"
+    },
+    {
+      "event_id": 4,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "execution_committed",
+      "code": "SIMULATED_SUCCESS",
+      "request_id": "request-demo-adjust",
+      "request_digest": "0c8563fb9145a15e9a4bb826b5a42431c3d556c2b460c6fd01bb98b3f115dbda",
+      "tool": "inventory.adjust",
+      "target": "item:item-demo-001"
+    },
+    {
+      "event_id": 5,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "APPROVAL_MISMATCH",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 6,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "APPROVAL_REPLAY",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 7,
+      "occurred_at": 1800000000,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "reviewer-demo-a",
+      "event": "approval_issued",
+      "code": "APPROVED",
+      "request_id": "request-demo-expired",
+      "request_digest": "594cb135bf5cb6d189a96a2a48881025bd18443523ba0a2ef0a3cfb5c59498f4",
+      "tool": "inventory.adjust",
+      "target": "item:item-demo-001"
+    },
+    {
+      "event_id": 8,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "APPROVAL_EXPIRED",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 9,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-b",
+      "event": "rejected",
+      "code": "IDENTITY_MISMATCH",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 10,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "IDENTITY_MISMATCH",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 11,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-b",
+      "event": "rejected",
+      "code": "APPROVAL_MISMATCH",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 12,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "APPROVAL_MISMATCH",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 13,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "INVALID_APPROVAL",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 14,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "UNKNOWN_TOOL",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 15,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "INVALID_SCHEMA",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    },
+    {
+      "event_id": 16,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "reviewer-demo-a",
+      "event": "approval_issued",
+      "code": "APPROVED",
+      "request_id": "request-demo-message",
+      "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+      "tool": "notifications.send",
+      "target": "channel:channel-demo-ops"
+    },
+    {
+      "event_id": 17,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "execution_committed",
+      "code": "SIMULATED_SUCCESS",
+      "request_id": "request-demo-message",
+      "request_digest": "ab4d348011ef0aa493d8f24a2f3c4a1231ce0005f20162a64d4385c0c3c29d3c",
+      "tool": "notifications.send",
+      "target": "channel:channel-demo-ops"
+    },
+    {
+      "event_id": 18,
+      "occurred_at": 1800000010,
+      "tenant_id": "tenant-demo-a",
+      "principal_id": "agent-demo-a",
+      "event": "rejected",
+      "code": "SELF_APPROVAL",
+      "request_id": null,
+      "request_digest": null,
+      "tool": null,
+      "target": null
+    }
+  ],
+  "limitations": [
+    "All connectors are local SQLite simulations.",
+    "Trusted authentication and authorization adapters are outside this reference.",
+    "Atomic local effects do not prove exactly-once effects in external systems."
+  ]
+}

@@ -1,0 +1,26 @@
+name: Offline verification
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Run the standard-library test suite
+        run: PYTHONPATH=src python -m unittest discover -s tests -v
+      - name: Run the offline demo
+        run: PYTHONPATH=src python -m approval_gateway demo --output-dir artifacts/ci-demo
+      - name: Preserve synthetic evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-evidence-python-${{ matrix.python }}
+          path: |
+            artifacts/ci-demo/report.html
+            artifacts/ci-demo/report.json

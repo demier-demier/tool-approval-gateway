@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tool-approval-gateway"
+version = "0.1.0"
+description = "An offline reference control plane for policy-bound agent tool approvals"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Security",
+]
+
+[project.scripts]
+approval-gateway = "approval_gateway.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
